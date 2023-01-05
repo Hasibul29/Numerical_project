@@ -432,7 +432,7 @@ def main():
 	check = st.sidebar.checkbox("Algorithom Time Comparision")
 	if check:
 		st.title("Algorithom Time Comparision")
-		st.subheader("The computational process is ongoing, please wait for some moment.")
+		st.subheader(":red[The computational process is ongoing, please wait for some moment.]")
 		compare(df,ls)
 	else:
 		st.title("Phone Selling Ratio")
@@ -446,16 +446,20 @@ def main():
 							))
 		uploaded_file = st.sidebar.file_uploader("Choose a file")
 		if uploaded_file is not None:
-			df = pd.read_csv(uploaded_file).values.tolist()
-			if selected=='Gauss Elimination':
-				st.subheader("_Gauss Elimination_")
+			data = pd.read_csv(uploaded_file)#.values.tolist()
+			df = data[:100].values.tolist()
+			ls = data[100:].values.tolist()
+			ls = ls[0]
+			if selected=='Gauss Eliminatison':
 				gausselimination(df,ls)
 			elif selected=='Cramer Rule':
-				st.subheader("_Cramer Rule_")
 				cramer(df,ls)
 			elif selected=='Gauss Jordan':
-				st.subheader("_Gauss Jordan_")
 				gauss_jordan(df,ls)
+			elif selected=='Jacobi':
+				jacobi(df,ls,1000,1e-6)
+			elif selected=='Gauss Seidel':
+				gauss_seidel(df, ls, 100, 1e-6)
 		else:
 			if selected=='Gauss Eliminatison':
 				gausselimination(df,ls)
