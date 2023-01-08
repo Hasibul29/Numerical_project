@@ -14,60 +14,6 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-
-def cramer(A, b , test=False):
-	n = len(A)
-	B = copy.deepcopy(A)
-	for k in range(n-1):
-		for i in range(k+1, n):
-			if A[i][k] != 0.0:
-				lam = A[i][k]/A[k][k]
-				A[i][k+1:n] = [x - lam*y for x, y in zip(A[i][k+1:n], A[k][k+1:n])]
-				b[i] = b[i] - lam*b[k]
-    
-	x = [0]*n
-	for k in range(n-1, -1, -1):
-		x[k] = (b[k] - sum(A[k][j]*x[j] for j in range(k+1,n))) / A[k][k]
-
-	if test:
-		return
-	col1, col2 ,col3= st.columns([1,1,1])
-	labels = 'Iphone', 'Huawei', 'Samsung','Others'
-	other1, other2, other3 = [0, 0, 0]
-	for y in range(3,n):
-		other1+=x[y]*B[0][y]
-		other2+=x[y]*B[1][y]
-		other3+=x[y]*B[2][y]
-	other1 = other1
-	other2 = other2
-	other3 = other3
-	sizes1 = [int(x[0]*B[0][0]/30),int(x[1]*B[0][1]),int(x[2]*B[0][2]),other1/40]
-	sizes2 = [int(x[0]*B[1][0]),int(x[1]*B[1][1]/30),int(x[2]*B[1][2]),other2/40]
-	sizes3 = [int(x[0]*B[2][0]),int(x[1]*B[2][1]),int(x[2]*B[2][2]/30),other3/40]
-	fig1, ax1 = plt.subplots()
-	fig2, ax2 = plt.subplots()
-	fig3, ax3 = plt.subplots() 
-	ax1.pie(sizes1,labels=labels, autopct='%1.1f%%',startangle=90)
-	ax2.pie(sizes2,labels=labels, autopct='%1.1f%%',startangle=90)
-	ax3.pie(sizes3,labels=labels, autopct='%1.1f%%',startangle=90)
-	col1.write(fig1)
-	col1.write("Bangladesh")
-	col2.write(fig2)
-	col2.write("China")
-	col3.write(fig3)
-	col3.write("Japan")
-	st.subheader("Phone Quantity")
-	source = pd.DataFrame({
-		'Quantity': [int(x[0]), int(x[1]), int(x[2]),int((other1/100 + other2/100 + other3/100)/70)],
-		'Phone': ['Iphone', 'Huawei', 'Samsung','Other']
-	})
-
-	bar_chart = alt.Chart(source).mark_bar().encode(
-		y='Quantity:Q',
-		x='Phone:O',
-	)
-	st.altair_chart(bar_chart, use_container_width=True,theme="streamlit")
-
 def gausselimination(A, b ,test=False):
 	n = len(A)
 	B = copy.deepcopy(A)
@@ -111,7 +57,7 @@ def gausselimination(A, b ,test=False):
 	col3.write("Japan")
 	st.subheader("Phone Quantity")
 	source = pd.DataFrame({
-		'Quantity': [int(x[0]), int(x[1]), int(x[2]),int((other1/100 + other2/100 + other3/100)/70)],
+		'Quantity': [int(x[0]), int(x[1]), int(x[2]),int((other1 + other2 + other3))],
 		'Phone': ['Iphone', 'Huawei', 'Samsung','Other']
 	})
 
@@ -279,7 +225,63 @@ def jacobi(A, b, max_iter, tol,test=False):
 	)
 	st.altair_chart(bar_chart, use_container_width=True,theme="streamlit")
 
+def cramer(A, b , test=False):
+	n = len(A)
+	B = copy.deepcopy(A)
+	for k in range(n-1):
+		for i in range(k+1, n):
+			if A[i][k] != 0.0:
+				lam = A[i][k]/A[k][k]
+				A[i][k+1:n] = [x - lam*y for x, y in zip(A[i][k+1:n], A[k][k+1:n])]
+				b[i] = b[i] - lam*b[k]
+    
+	x = [0]*n
+	for k in range(n-1, -1, -1):
+		x[k] = (b[k] - sum(A[k][j]*x[j] for j in range(k+1,n))) / A[k][k]
 
+	if test:
+		return
+	col1, col2 ,col3= st.columns([1,1,1])
+	labels = 'Iphone', 'Huawei', 'Samsung','Others'
+	other1, other2, other3 = [0, 0, 0]
+	for y in range(3,n):
+		other1+=x[y]*B[0][y]
+		other2+=x[y]*B[1][y]
+		other3+=x[y]*B[2][y]
+	other1 = other1
+	other2 = other2
+	other3 = other3
+	sizes1 = [int(x[0]*B[0][0]/30),int(x[1]*B[0][1]),int(x[2]*B[0][2]),other1/40]
+	sizes2 = [int(x[0]*B[1][0]),int(x[1]*B[1][1]/30),int(x[2]*B[1][2]),other2/40]
+	sizes3 = [int(x[0]*B[2][0]),int(x[1]*B[2][1]),int(x[2]*B[2][2]/30),other3/40]
+	fig1, ax1 = plt.subplots()
+	fig2, ax2 = plt.subplots()
+	fig3, ax3 = plt.subplots() 
+	ax1.pie(sizes1,labels=labels, autopct='%1.1f%%',startangle=90)
+	ax2.pie(sizes2,labels=labels, autopct='%1.1f%%',startangle=90)
+	ax3.pie(sizes3,labels=labels, autopct='%1.1f%%',startangle=90)
+	col1.write(fig1)
+	col1.write("Bangladesh")
+	col2.write(fig2)
+	col2.write("China")
+	col3.write(fig3)
+	col3.write("Japan")
+	st.subheader("Phone Quantity")
+	source = pd.DataFrame({
+		'Quantity': [int(x[0]), int(x[1]), int(x[2]),int((other1/100 + other2/100 + other3/100)/70)],
+		'Phone': ['Iphone', 'Huawei', 'Samsung','Other']
+	})
+
+	bar_chart = alt.Chart(source).mark_bar().encode(
+		y='Quantity:Q',
+		x='Phone:O',
+	)
+	st.altair_chart(bar_chart, use_container_width=True,theme="streamlit")
+
+	
+	
+	
+	
 def compare(df,ls):
 	st.subheader("Time for 50 iteration")
 	start = time.perf_counter()
