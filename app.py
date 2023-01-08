@@ -318,7 +318,7 @@ def compare(df,ls):
 	# st.subheader(f"_Jacobi_ {e}")
 	source = pd.DataFrame({
 		'Time in Seconds': time_data,
-		'Algorithoms': ['Gauss Eliminatison','Cramer Rule','Gauss Jordan','Gauss Seidel','Jacobi']
+		'Algorithoms': ['Gauss Elimination','Cramer Rule','Gauss Jordan','Gauss Seidel','Jacobi']
 	})
 
 	bar_chart = alt.Chart(source).mark_bar().encode(
@@ -440,7 +440,7 @@ def main():
 		st.title("Phone Selling Ratio")
 		st.header("Bangladesh, China and Japan")
 		selected=st.sidebar.selectbox('Menu',
-							('Gauss Eliminatison',
+							('Gauss Elimination',
 							'Cramer Rule',
 							'Gauss Jordan',
 							'Jacobi',
@@ -452,7 +452,7 @@ def main():
 			df = data[:100].values.tolist()
 			ls = data[100:].values.tolist()
 			ls = ls[0]
-			if selected=='Gauss Eliminatison':
+			if selected=='Gauss Elimination':
 				gausselimination(df,ls)
 			elif selected=='Cramer Rule':
 				cramer(df,ls)
@@ -463,7 +463,7 @@ def main():
 			elif selected=='Gauss Seidel':
 				gauss_seidel(df, ls, 100, 1e-6)
 		else:
-			if selected=='Gauss Eliminatison':
+			if selected=='Gauss Elimination':
 				gausselimination(df,ls)
 			elif selected=='Cramer Rule':
 				cramer(df,ls)
