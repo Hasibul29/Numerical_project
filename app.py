@@ -57,7 +57,7 @@ def gausselimination(A, b ,test=False):
 	col3.write("Japan")
 	st.subheader("Phone Quantity")
 	source = pd.DataFrame({
-		'Quantity': [int(x[0]), int(x[1]), int(x[2]),int((other1 + other2 + other3)/100)],
+		'Quantity': [int(x[0]), int(x[1]), int(x[2]),int((other1 + other2 + other3)/1000)],
 		'Phone': ['Iphone', 'Huawei', 'Samsung','Other']
 	})
 
